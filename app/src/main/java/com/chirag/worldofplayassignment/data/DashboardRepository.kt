@@ -1,31 +1,35 @@
 package com.chirag.worldofplayassignment.data
 
-import com.chirag.worldofplayassignment.data.model.LoggedInUser
-import com.chirag.worldofplayassignment.data.model.TopStories
+import androidx.lifecycle.MutableLiveData
 
 
 /**
  * Created by Chirag Sidhiwala on 24/4/20.
  */
 class DashboardRepository(val dashboardDataSource: DashboardDataSource) {
-    var topStories: TopStories? = null
+    var topStoriesLiveData: MutableLiveData<List<String>>
+    var topStories: List<String>? =null
         private set
-
     init {
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
-        topStories = null
+        topStoriesLiveData = MutableLiveData()
+        topStories = emptyList()
     }
 
-    fun getTopStories(): Result<TopStories> {
-        val result = dashboardDataSource.getTopStories()
-        if (result is Result.Success) {
-            val storyIdList = result.data
+    fun getTopStoriesIdList(): MutableLiveData<List<String>> {
+        var resultOutput = emptyList<String>()
+        dashboardDataSource.getStoryIdList() { result ->
+            if (result is Result.Success) {
+                setTopStories(result.data)
+                resultOutput = result.data
+                topStoriesLiveData.value = resultOutput
+            }
         }
-        return result
+        return topStoriesLiveData
     }
 
-    private fun setTopStories(stories: TopStories){
+    private fun setTopStories(stories: List<String>) {
         this.topStories = stories
     }
 }

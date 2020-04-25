@@ -1,6 +1,7 @@
 package com.chirag.worldofplayassignment.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,16 +16,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.chirag.worldofplayassignment.R
 import com.chirag.worldofplayassignment.databinding.ActivityLoginBinding
+import com.chirag.worldofplayassignment.ui.dashboard.DashboardActivity
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var loginViewModel: LoginViewModel
-    lateinit var binding: ActivityLoginBinding
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory()).get(LoginViewModel::class.java)
+        loginViewModel =
+            ViewModelProvider(this, LoginViewModelFactory()).get(LoginViewModel::class.java)
         binding.logViewModel = loginViewModel
 
 
@@ -103,6 +106,9 @@ class LoginActivity : AppCompatActivity() {
             "$welcome $displayName",
             Toast.LENGTH_LONG
         ).show()
+
+        val dashboardIntent = Intent(this, DashboardActivity::class.java)
+        startActivity(dashboardIntent)
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

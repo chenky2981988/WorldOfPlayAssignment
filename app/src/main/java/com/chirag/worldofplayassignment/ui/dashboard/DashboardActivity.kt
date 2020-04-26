@@ -2,6 +2,7 @@ package com.chirag.worldofplayassignment.ui.dashboard
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.chirag.worldofplayassignment.R
 
 class DashboardActivity : AppCompatActivity() {
@@ -14,5 +15,9 @@ class DashboardActivity : AppCompatActivity() {
                 .replace(R.id.container, DashboardListFragment.newInstance())
                 .commitNow()
         }
+    }
+
+    fun closeBtnClicked(view: View) {
+        onBackPressed()
     }
 }

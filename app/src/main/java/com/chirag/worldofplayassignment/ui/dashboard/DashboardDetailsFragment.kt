@@ -1,23 +1,22 @@
 package com.chirag.worldofplayassignment.ui.dashboard
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-
 import com.chirag.worldofplayassignment.R
 import com.chirag.worldofplayassignment.data.model.StoryDetails
-import com.chirag.worldofplayassignment.databinding.FragmentDashboardDetailsBinding
+import com.chirag.worldofplayassignment.ui.dashboard.viewmodels.DashboardDetailsVewModel
+import com.chirag.worldofplayassignment.ui.dashboard.viewmodels.DashboardDetailsViewModelFactory
+import kotlinx.android.synthetic.main.fragment_dashboard_details.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class DashboardDetailsFragment : Fragment() {
 
-    lateinit var binding: FragmentDashboardDetailsBinding
     lateinit var viewModel: DashboardDetailsVewModel
     private lateinit var storyDetails: StoryDetails
 
@@ -35,9 +34,9 @@ class DashboardDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard_details, container, false)
-        return binding.root
+        return LayoutInflater.from(context)
+            .inflate(R.layout.fragment_dashboard_details, container, false)
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -46,11 +45,12 @@ class DashboardDetailsFragment : Fragment() {
             this,
             DashboardDetailsViewModelFactory()
         ).get(DashboardDetailsVewModel::class.java)
-        binding.dashboardDetailsViewModel = viewModel
 
         storyDetails = arguments!!.getParcelable<StoryDetails>("storyDetails")!!
         viewModel.setStoryDetails(storyDetails)
-        binding.storyUrl.loadUrl(storyDetails.url)
+        newsTitleTv.text = storyDetails.title
+        storyUrl.webViewClient = CustomWebViewClient(webViewProgressBar)
+        storyUrl.loadUrl(storyDetails.url)
     }
 
 }

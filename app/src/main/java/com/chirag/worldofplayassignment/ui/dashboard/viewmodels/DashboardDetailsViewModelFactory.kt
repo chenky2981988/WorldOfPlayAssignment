@@ -1,4 +1,4 @@
-package com.chirag.worldofplayassignment.ui.dashboard
+package com.chirag.worldofplayassignment.ui.dashboard.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

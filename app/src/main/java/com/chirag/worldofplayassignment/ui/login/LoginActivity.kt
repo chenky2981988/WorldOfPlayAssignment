@@ -7,27 +7,33 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.CompoundButton
 import android.widget.EditText
+import android.widget.Switch
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.chirag.worldofplayassignment.R
+import com.chirag.worldofplayassignment.ui.BaseActivity
 import com.chirag.worldofplayassignment.ui.dashboard.DashboardActivity
 import com.chirag.worldofplayassignment.ui.login.viewmodels.LoginViewModel
 import com.chirag.worldofplayassignment.ui.login.viewmodels.LoginViewModelFactory
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+
+class LoginActivity: BaseActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(getSavedTheme())
         setContentView(R.layout.activity_login)
         loginViewModel =
-            ViewModelProvider(this,
+            ViewModelProvider(
+                this,
                 LoginViewModelFactory()
             ).get(LoginViewModel::class.java)
 
@@ -41,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
                 username.error = getString(loginState.usernameError)
             }
             if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+                //password.e = getString(loginState.passwordError)
             }
         })
 
@@ -95,6 +101,21 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
         }
+
+        themeSwitch.isChecked = currentTheme != THEME_2
+
+        themeSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            changeTheme(isChecked)
+        })
+    }
+
+    private fun changeTheme(checked: Boolean) {
+        if (checked) {
+            saveTheme(THEME_1)
+        } else {
+            saveTheme(THEME_2)
+        }
+
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
@@ -129,4 +150,5 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
+
 }

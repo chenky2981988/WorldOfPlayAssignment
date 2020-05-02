@@ -1,7 +1,7 @@
 package com.chirag.worldofplayassignment
 
 import android.app.Application
-
+import com.chirag.worldofplayassignment.utils.SharedPrefs
 
 
 /**
@@ -9,8 +9,12 @@ import android.app.Application
  */
 class AssignmentApplication: Application() {
 
+    companion object {
+        lateinit var sharedPreferences: SharedPrefs
+    }
+
     override fun onCreate() {
-        //sharedPreferences = SharedPrefs(applicationContext)
+        sharedPreferences = SharedPrefs(applicationContext)
         super.onCreate()
 
     }

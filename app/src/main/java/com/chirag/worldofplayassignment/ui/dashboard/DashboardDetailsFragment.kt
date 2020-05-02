@@ -50,6 +50,8 @@ class DashboardDetailsFragment : Fragment() {
         viewModel.setStoryDetails(storyDetails)
         newsTitleTv.text = storyDetails.title
         storyUrl.webViewClient = CustomWebViewClient(webViewProgressBar)
+        storyUrl.settings.javaScriptEnabled = true
+        storyUrl.settings.javaScriptCanOpenWindowsAutomatically = true
         storyUrl.loadUrl(storyDetails.url)
     }
 

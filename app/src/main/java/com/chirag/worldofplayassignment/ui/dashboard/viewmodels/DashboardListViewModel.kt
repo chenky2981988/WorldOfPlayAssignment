@@ -8,6 +8,7 @@ import com.chirag.worldofplayassignment.data.model.NetworkState
 import com.chirag.worldofplayassignment.data.model.StoryDetails
 
 class DashboardListViewModel(private val dashboardRepository: DashboardRepository) : ViewModel() {
+
     fun getStoryDetailsList(): LiveData<PagedList<StoryDetails>> {
         dashboardRepository.getStoriesList()
         return dashboardRepository.getStoryListLiveData()

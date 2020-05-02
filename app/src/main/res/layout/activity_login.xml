@@ -37,9 +37,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
-        app:passwordToggleEnabled="true">
+        app:passwordToggleEnabled="true"
+        android:background="@android:color/transparent">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,20 +56,19 @@
 
     <Button
         android:id="@+id/loginBtn"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_gravity="start"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="64dp"
-        android:background="@drawable/rounded_corner_button"
         android:enabled="false"
+        android:padding="5dp"
         android:text="@string/action_get_login"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="18sp"
+        app:cornerRadius="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +102,7 @@
         app:srcCompat="@drawable/ic_accessible_black" />
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/themeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

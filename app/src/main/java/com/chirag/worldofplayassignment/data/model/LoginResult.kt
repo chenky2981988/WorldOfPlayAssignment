@@ -1,4 +1,6 @@
-package com.chirag.worldofplayassignment.ui.login
+package com.chirag.worldofplayassignment.data.model
+
+import com.chirag.worldofplayassignment.ui.login.LoggedInUserView
 
 /**
  * Authentication result : success (user details) or error message.

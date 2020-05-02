@@ -7,48 +7,54 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.CompoundButton
 import android.widget.EditText
+import android.widget.Switch
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.chirag.worldofplayassignment.R
-import com.chirag.worldofplayassignment.databinding.ActivityLoginBinding
+import com.chirag.worldofplayassignment.ui.BaseActivity
 import com.chirag.worldofplayassignment.ui.dashboard.DashboardActivity
+import com.chirag.worldofplayassignment.ui.login.viewmodels.LoginViewModel
+import com.chirag.worldofplayassignment.ui.login.viewmodels.LoginViewModelFactory
+import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+
+class LoginActivity: BaseActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        setTheme(getSavedTheme())
+        setContentView(R.layout.activity_login)
         loginViewModel =
-            ViewModelProvider(this, LoginViewModelFactory()).get(LoginViewModel::class.java)
-        binding.logViewModel = loginViewModel
-
+            ViewModelProvider(
+                this,
+                LoginViewModelFactory()
+            ).get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
-            binding.login.isEnabled = loginState.isDataValid
+            loginBtn.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                binding.username.error = getString(loginState.usernameError)
+                username.error = getString(loginState.usernameError)
             }
             if (loginState.passwordError != null) {
-                binding.password.error = getString(loginState.passwordError)
+                //password.e = getString(loginState.passwordError)
             }
         })
 
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            binding.loading.visibility = View.GONE
+            loadingProgressBar.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
@@ -61,18 +67,18 @@ class LoginActivity : AppCompatActivity() {
             finish()
         })
 
-        binding.username.afterTextChanged {
+        username.afterTextChanged {
             loginViewModel.loginDataChanged(
-                binding.username.text.toString(),
-                binding.password.text.toString()
+                username.text.toString(),
+                password.text.toString()
             )
         }
 
-        binding.password.apply {
+        password.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
-                    binding.username.text.toString(),
-                    binding.password.text.toString()
+                    username.text.toString(),
+                    password.text.toString()
                 )
             }
 
@@ -80,21 +86,36 @@ class LoginActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.login(
-                            binding.username.text.toString(),
-                            binding.password.text.toString()
+                            username.text.toString(),
+                            password.text.toString()
                         )
                 }
                 false
             }
 
-            binding.login.setOnClickListener {
-                binding.loading.visibility = View.VISIBLE
+            loginBtn.setOnClickListener {
+                loadingProgressBar.visibility = View.VISIBLE
                 loginViewModel.login(
-                    binding.username.text.toString(),
-                    binding.password.text.toString()
+                    username.text.toString(),
+                    password.text.toString()
                 )
             }
         }
+
+        themeSwitch.isChecked = currentTheme != THEME_2
+
+        themeSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            changeTheme(isChecked)
+        })
+    }
+
+    private fun changeTheme(checked: Boolean) {
+        if (checked) {
+            saveTheme(THEME_1)
+        } else {
+            saveTheme(THEME_2)
+        }
+
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
@@ -129,4 +150,5 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
+
 }

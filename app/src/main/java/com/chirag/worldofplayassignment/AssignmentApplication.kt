@@ -1,22 +1,21 @@
 package com.chirag.worldofplayassignment
 
 import android.app.Application
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
+import com.chirag.worldofplayassignment.utils.SharedPrefs
 
 
 /**
  * Created by Chirag Sidhiwala on 24/4/20.
  */
 class AssignmentApplication: Application() {
+
     companion object {
-        //lateinit var sharedPreferences: SharedPrefs
-        lateinit var requestQueue: RequestQueue
+        lateinit var sharedPreferences: SharedPrefs
     }
 
     override fun onCreate() {
-        //sharedPreferences = SharedPrefs(applicationContext)
+        sharedPreferences = SharedPrefs(applicationContext)
         super.onCreate()
-        requestQueue = Volley.newRequestQueue(this)
+
     }
 }
